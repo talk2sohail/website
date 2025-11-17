@@ -1,0 +1,43 @@
+---
+// src/components/BlogPost.astro
+export interface Props {
+  title: string;
+  excerpt: string;
+  url: string;
+}
+
+const { title, excerpt, url } = Astro.props;
+---
+<div class="blog-post">
+  <h2><a href={url}>{title}</a></h2>
+  <p>{excerpt}</p>
+  <a href={url} class="read-more">Read More &rarr;</a>
+</div>
+
+<style>
+  .blog-post {
+    background-color: var(--card-background);
+    padding: 1.5rem;
+    border-radius: 8px;
+    color: var(--foreground);
+  }
+  .blog-post h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  .blog-post h2 a {
+    text-decoration: none;
+    color: var(--accent1);
+  }
+  .blog-post p {
+    margin-bottom: 1.5rem;
+  }
+  .blog-post .read-more {
+    text-decoration: none;
+    color: var(--accent2);
+  }
+  .blog-post .read-more:hover {
+    text-decoration: underline;
+  }
+</style>

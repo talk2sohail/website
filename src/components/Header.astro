@@ -1,0 +1,38 @@
+---
+// src/components/Header.astro
+---
+<header>
+  <div class="logo">
+    <a href="/">My Blog</a>
+  </div>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+  </nav>
+</header>
+
+<style>
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+  .logo a {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: var(--accent1);
+  }
+  nav a {
+    margin-left: 1.5rem;
+    text-decoration: none;
+    color: var(--foreground);
+  }
+  nav a:hover {
+    color: var(--accent1);
+  }
+</style>

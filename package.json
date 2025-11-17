@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "mdsohail.dev",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -10,9 +10,9 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/check": "^0.5.9",
-    "@astrojs/node": "^8.2.3",
-    "astro": "^4.5.3",
+    "@astrojs/check": "^0.9.5",
+    "@astrojs/node": "^9.5.0",
+    "astro": "^5.15.8",
     "typescript": "^5.4.2"
   }
 }
