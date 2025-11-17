@@ -1,0 +1,61 @@
+---
+// src/components/FeaturedPosts.astro
+const posts = [
+  {
+    title: 'Understanding Networking in Nomad',
+    url: '/blog/understanding-networking-in-nomad',
+  },
+  {
+    title: 'Using ClickHouse Keeper for Replication',
+    url: '/blog/using-clickhouse-keeper-for-replication',
+  },
+  {
+    title: 'Running Nomad for home server',
+    url: '/blog/running-nomad-for-home-server',
+  },
+  {
+    title: 'DNS Lookups in Kubernetes',
+    url: '/blog/dns-lookups-in-kubernetes',
+  },
+];
+---
+<div class="featured-posts">
+  <h2>⭐ Featured Posts</h2>
+  <p>A curated collection of my top articles from over the years:</p>
+  <ul>
+    {posts.map(post => (
+      <li>
+        <a href={post.url}>{post.title}</a>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .featured-posts {
+    margin-top: 2rem;
+  }
+  h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  p {
+    margin-bottom: 1rem;
+  }
+  ul {
+    list-style-type: '•';
+    padding-left: 1.5rem;
+  }
+  li {
+    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
+  }
+  a {
+    text-decoration: none;
+    color: var(--accent1);
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+</style>

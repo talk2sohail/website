@@ -1,52 +1,58 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
-import Hero from '../components/Hero.astro';
-import BlogPost from '../components/BlogPost.astro';
+import FeaturedPosts from '../components/FeaturedPosts.astro';
 import Footer from '../components/Footer.astro';
-
-const posts = [
-  {
-    title: 'My First Blog Post',
-    excerpt: 'This is the excerpt for my first blog post. I hope you enjoy it!',
-    url: '/blog/first-post',
-  },
-  {
-    title: 'Another Blog Post',
-    excerpt: 'This is another post, with some more content to see how it looks.',
-    url: '/blog/another-post',
-  },
-  {
-    title: 'A Third Post',
-    excerpt: 'The more the merrier! Here is a third post to fill out the grid.',
-    url: '/blog/third-post',
-  },
-];
 ---
 
-<Layout title="My Blog">
+<Layout title="Md Sohail">
   <Header />
   <main>
-    <Hero />
-    <div class="blog-post-grid">
-      {posts.map(post => (
-        <BlogPost title={post.title} excerpt={post.excerpt} url={post.url} />
-      ))}
+    <div class="content-wrapper">
+      <div class="bio">
+        <h2>👋 Hello</h2>
+        <p>
+            I'm Md Sohail – but you might stumble across <code>@kenopasa</code> in some corners of the internet. I work at Google where I focus mainly on backend engineering along with handling infrastructure and observability.
+        </p>
+        <p>
+          I like to tinker with stuff around monitoring, networking and distributed systems.
+        </p>
+        <p>
+          When I'm not in the tech zone, I'm probably playing badminton, on a road trip, or experimenting in the kitchen. I've got a soft spot for indie music too, and I've curated some of my favorites on Spotify playlist.
+        </p>
+      </div>
+      <div class="profile-picture">
+        <img src="/profile.JPG" alt="Md Sohail" />
+      </div>
     </div>
+    <FeaturedPosts />
   </main>
   <Footer />
 </Layout>
 
 <style>
-  main {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 2rem;
+  .content-wrapper {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
   }
-  .blog-post-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem;
+  .bio {
+    flex: 1;
+  }
+  .bio h2 {
+    font-size: 1.5rem;
+    font-weight: bolder;
+    margin-bottom: 1rem;
+  }
+  .profile-picture img {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+  }
+  @media (max-width: 768px) {
+    .content-wrapper {
+      flex-direction: column;
+    }
   }
 </style>
