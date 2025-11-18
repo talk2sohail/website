@@ -20,53 +20,56 @@ const { title } = Astro.props;
 	</body>
 </html>
 <style is:global>
-  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans&display=swap');
+	@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans&display=swap");
 	:root {
 		--background: #1a1b26;
 		--foreground: #a9b1d6;
 		--accent1: #7aa2f7;
 		--accent2: #bb9af7;
 		--card-background: #24283b;
-    --icon-color-dark: #FFD700;
-    --icon-color-light: #333333;
+		--icon-color-dark: #ffd700;
+		--icon-color-light: #333333;
 	}
-  :root.light-mode {
-    --background: #f5f5f5;
-    --foreground: #333333;
-    --accent1: #007acc;
-    --accent2: #8e44ad;
-    --card-background: #ffffff;
-  }
+	:root.light-mode {
+		--background: #f5f5f5;
+		--foreground: #333333;
+		--accent1: #007acc;
+		--accent2: #8e44ad;
+		--card-background: #ffffff;
+	}
 	body {
 		max-width: 800px;
 		margin: 0 auto;
 		padding: 2rem;
 	}
-  @media (max-width: 768px) {
-    body {
-      padding: 1rem;
-    }
-  }
+	@media (max-width: 768px) {
+		body {
+			padding: 1rem;
+		}
+	}
 	html {
-		font-family: 'IBM Plex Sans', sans-serif;
+		font-family: "IBM Plex Sans", sans-serif;
 		background: var(--background);
 		color: var(--foreground);
 		background-size: 224px;
-    font-size: 102%;
-    letter-spacing: 0.5px;
-    transition: background 0.3s ease, color 0.3s ease;
+		font-size: 102%;
+		letter-spacing: 0.5px;
+		transition:
+			background 0.3s ease,
+			color 0.3s ease;
 	}
 	code {
-		font-family: 'IBM Plex Mono', monospace;
+		font-family: "IBM Plex Mono", monospace;
 	}
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const themeToggle = document.querySelector('.theme-toggle');
-    const html = document.querySelector('html');
+	document.addEventListener("DOMContentLoaded", () => {
+		const themeToggle: HTMLElement | null =
+			document.querySelector(".theme-toggle");
+		const html: HTMLHtmlElement | null = document.querySelector("html");
 
-    const sunIcon = `
+		const sunIcon = `
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="12" cy="12" r="5" fill="currentColor"/>
         <path d="M12 1V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -80,30 +83,38 @@ const { title } = Astro.props;
       </svg>
     `;
 
-    const moonIcon = `
+		const moonIcon = `
       <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon">
         <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
       </svg>
     `;
 
-    const applyTheme = (theme:string) => {
-      if (theme === 'light') {
-        html.classList.add('light-mode');
-        themeToggle.innerHTML = moonIcon;
-      } else {
-        html.classList.remove('light-mode');
-        themeToggle.innerHTML = sunIcon;
-      }
-    };
+		if (html && themeToggle) {
+			type Theme = "light" | "dark";
 
-    themeToggle.addEventListener('click', () => {
-      const currentTheme = html.classList.contains('light-mode') ? 'light' : 'dark';
-      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-      localStorage.setItem('theme', newTheme);
-      applyTheme(newTheme);
-    });
+			const applyTheme = (theme: Theme): void => {
+				if (theme === "light") {
+					html.classList.add("light-mode");
+					themeToggle.innerHTML = moonIcon;
+				} else {
+					html.classList.remove("light-mode");
+					themeToggle.innerHTML = sunIcon;
+				}
+			};
 
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    applyTheme(savedTheme);
-  });
+			themeToggle.addEventListener("click", () => {
+				const currentTheme: Theme = html.classList.contains("light-mode")
+					? "light"
+					: "dark";
+				const newTheme: Theme = currentTheme === "light" ? "dark" : "light";
+				localStorage.setItem("theme", newTheme);
+				applyTheme(newTheme);
+			});
+
+			const savedTheme = localStorage.getItem("theme");
+			const initialTheme: Theme =
+				savedTheme === "light" || savedTheme === "dark" ? savedTheme : "dark";
+			applyTheme(initialTheme);
+		}
+	});
 </script>
