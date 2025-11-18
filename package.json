@@ -14,9 +14,5 @@
     "@astrojs/node": "^9.5.0",
     "astro": "^5.15.8",
     "typescript": "^5.4.2"
-  },
-  "devDependencies": {
-    "@types/estree": "^1.0.8",
-    "@types/mdast": "^4.0.4"
   }
 }
