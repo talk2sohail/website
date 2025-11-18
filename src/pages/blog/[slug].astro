@@ -1,0 +1,63 @@
+
+---
+export const prerender = true;
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+import readingTime from 'reading-time';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog');
+  return allPosts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+const stats = readingTime(post.body);
+---
+
+<Layout title={post.data.title}>
+  <Header />
+  <main>
+    <h1>{post.data.title}</h1>
+    <div class="post-meta">
+      <span class="date">{post.data.publishDate.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+      <span class="reading-time">{stats.text}</span>
+    </div>
+    <hr class="dotted-line" />
+    <article>
+      <Content />
+    </article>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  h1 {
+    font-size: 2.2rem;
+    font-weight: bolder;
+    margin-bottom: 1rem;
+  }
+  .post-meta {
+    display: flex;
+    justify-content: space-between;
+    color: var(--foreground);
+    font-size: 0.8rem;
+  }
+  .dotted-line {
+    border: none;
+    height: 1px;
+    background-image: radial-gradient(circle, var(--foreground) 1px, transparent 1px);
+    background-size: 5px 1px;
+    background-repeat: repeat-x;
+  }
+  article {
+    line-height: 1.6;
+  }
+</style>

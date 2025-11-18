@@ -1,0 +1,73 @@
+
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const allPosts = (await getCollection('blog')).sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+---
+
+<Layout title="Posts">
+  <Header />
+  <main>
+    <h1>Posts</h1>
+    <a href="/rss.xml" class="rss-link">Subscribe to Atom feed</a>
+    <hr class="dotted-line" />
+    <ul class="post-list">
+      {allPosts.map(post => (
+        <li>
+          <span class="date">{post.data.publishDate.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+          <a href={`/blog/${post.slug}`}>{post.data.title}</a>
+        </li>
+      ))}
+    </ul>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  h1 {
+    font-size: 2.2rem;
+    font-weight: bolder;
+    margin-bottom: 1rem;
+  }
+  .rss-link {
+    text-decoration: none;
+    color: var(--accent1);
+    display: block;
+  }
+  .rss-link:hover {
+    text-decoration: underline;
+  }
+  .dotted-line {
+    border: none;
+    height: 1px;
+    background-image: radial-gradient(circle, var(--foreground) 1px, transparent 1px);
+    background-size: 5px 1px;
+    background-repeat: repeat-x;
+    margin: 1.5rem 0;
+  }
+  .post-list {
+    list-style: none;
+    padding: 0;
+  }
+  .post-list li {
+    display: flex;
+    gap: 1.5rem;
+    align-items: baseline;
+    margin-bottom: 1rem;
+  }
+  .date {
+    color: var(--foreground);
+    width: 120px;
+    flex-shrink: 0;
+  }
+  .post-list a {
+    text-decoration: none;
+    color: var(--accent1);
+  }
+  .post-list a:hover {
+    text-decoration: underline;
+  }
+</style>
