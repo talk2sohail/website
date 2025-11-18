@@ -1,11 +1,14 @@
 
 ---
 import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import { sortPosts } from '../../utils/posts';
 
-const allPosts = (await getCollection('blog')).sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+const posts = await getCollection('blog');
+const allPosts: CollectionEntry<'blog'>[] = posts.sort(sortPosts);
 ---
 
 <Layout title="Posts">
@@ -15,7 +18,7 @@ const allPosts = (await getCollection('blog')).sort((a, b) => b.data.publishDate
     <a href="/rss.xml" class="rss-link">Subscribe to Atom feed</a>
     <hr class="dotted-line" />
     <ul class="post-list">
-      {allPosts.map(post => (
+      {allPosts.map((post: CollectionEntry<'blog'>) => (
         <li>
           <span class="date">{post.data.publishDate.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
           <a href={`/blog/${post.slug}`}>{post.data.title}</a>
