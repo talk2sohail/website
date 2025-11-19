@@ -1,48 +1,51 @@
 ---
-import { getCollection } from 'astro:content';
-import type { CollectionEntry } from 'astro:content';
-import { sortPosts } from '../utils/posts';
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import { sortPosts } from "../utils/posts";
 
-const allPosts = await getCollection('blog');
-const posts: CollectionEntry<'blog'>[] = allPosts.sort(sortPosts).slice(0, 4);
+const allPosts = await getCollection("blog");
+const posts: CollectionEntry<"blog">[] = allPosts.sort(sortPosts).slice(0, 4);
 ---
+
 <div class="featured-posts">
-  <h2>⭐ Featured Posts</h2>
-  <p>A curated collection of my top articles from over the years:</p>
-  <ul>
-    {posts.map((post: CollectionEntry<'blog'>) => (
-      <li>
-        <a href={`/blog/${post.slug}`}>{post.data.title}</a>
-      </li>
-    ))}
-  </ul>
+	<h2>⭐ Featured Posts</h2>
+	<p>A curated collection of my top articles from over the years:</p>
+	<ul>
+		{
+			posts.map((post) => (
+				<li>
+					<a href={`/blog/${post.slug}`}>{post.data.title}</a>
+				</li>
+			))
+		}
+	</ul>
 </div>
 
 <style>
-  .featured-posts {
-    margin-top: 2rem;
-  }
-  h2 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-  }
-  p {
-    margin-bottom: 1rem;
-  }
-  ul {
-    list-style-type: '•';
-    padding-left: 1.5rem;
-  }
-  li {
-    margin-bottom: 0.5rem;
-    padding-left: 0.5rem;
-  }
-  a {
-    text-decoration: none;
-    color: var(--accent1);
-  }
-  a:hover {
-    text-decoration: underline;
-  }
+	.featured-posts {
+		margin-top: 2rem;
+	}
+	h2 {
+		font-size: 1.5rem;
+		font-weight: bold;
+		margin-bottom: 1rem;
+	}
+	p {
+		margin-bottom: 1rem;
+	}
+	ul {
+		list-style-type: "•";
+		padding-left: 1.5rem;
+	}
+	li {
+		margin-bottom: 0.5rem;
+		padding-left: 0.5rem;
+	}
+	a {
+		text-decoration: none;
+		color: var(--accent1);
+	}
+	a:hover {
+		text-decoration: underline;
+	}
 </style>

@@ -1,0 +1,84 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout title="Contact | Md Sohail">
+	<Header />
+	<main>
+		<h1>Contact Me</h1>
+		<p>Email: talk2sohail1001 at gmail.com</p>
+		<div class="identities">
+			<h4>My other identities:</h4>
+			<ul>
+				<li>
+					Twitter: <a href="https://twitter.com/talk2sohail1001" target="_blank"
+						>@talk2sohail1001</a
+					>
+				</li>
+				<li>
+					GitHub: <a href="https://github.com/talk2sohail" target="_blank"
+						>talk2sohail</a
+					>
+				</li>
+				<li>
+					LinkedIn: <a
+						href="https://www.linkedin.com/in/talk2sohail/"
+						target="_blank">talk2sohail</a
+					>
+				</li>
+				<li>
+					HackerNews: <a
+						href="https://news.ycombinator.com/user?id=fire2dev"
+						target="_blank">@fire2dev</a
+					>
+				</li>
+			</ul>
+			<p class="note">
+				Note: Please follow the <a href="https://nohello.net" target="_blank"
+					>NoHello</a
+				> rule in case you're reaching out for technical help.
+			</p>
+			<Footer />
+		</div>
+
+		<style>
+			h1 {
+				font-size: 2rem;
+				font-weight: bolder;
+				margin-bottom: 1rem;
+			}
+			p {
+				line-height: 1.6;
+			}
+			.identities {
+				margin-top: 2rem;
+			}
+			.identities h2 {
+				font-size: 1.5rem;
+				font-weight: bolder;
+				margin-bottom: 1rem;
+			}
+			.identities ul {
+				list-style: disc;
+				padding-left: 20px;
+			}
+			.identities li {
+				margin-bottom: 0.5rem;
+				margin-left: 1rem;
+			}
+			a {
+				color: var(--accent1);
+				text-decoration: none;
+			}
+			a:hover {
+				text-decoration: underline;
+			}
+			.note {
+				margin-top: 2rem;
+				font-size: 0.9rem;
+			}
+		</style>
+	</main>
+</Layout>

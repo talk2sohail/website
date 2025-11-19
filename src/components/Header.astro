@@ -1,67 +1,64 @@
 ---
 // src/components/Header.astro
 ---
+
 <header>
-  <div class="header-content">
-    <h1>Md Sohail</h1>
-    <nav>
-      <a href="/">Home</a>
-      <a href="/blog">Posts</a>
-      <a href="/projects">Projects</a>
-      <a href="/services">Services</a>
-      <a href="/talks">Talks</a>
-      <a href="/til">TIL</a>
-      <a href="/travel">Travel</a>
-      <a href="/contact">Contact</a>
-    </nav>
-  </div>
-  <button class="theme-toggle"></button>
+	<div class="header-content">
+		<h1>Md Sohail</h1>
+		<nav>
+			<a href="/">Home</a>
+			<a href="/blog">Blogs</a>
+			<a href="/projects">Projects</a>
+			<a href="/contact">Contact</a>
+		</nav>
+	</div>
+	<button class="theme-toggle"></button>
 </header>
 
 <style>
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .header-content {
-    display: flex;
-    flex-direction: column;
-  }
-  h1 {
-    font-size: 2.8rem;
-    font-weight: bolder;
-    margin-bottom: 1rem;
-  }
-  nav {
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-  }
-  @media (max-width: 768px) {
-    nav {
-      gap: 1rem;
-    }
-  }
-  nav a {
-    text-decoration: none;
-    color: var(--accent1);
-  }
-  nav a:hover {
-    color: var(--accent1);
-  }
-  .theme-toggle {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: var(--icon-color-dark);
-    transition: transform 0.3s ease;
-  }
-  html.light-mode .theme-toggle {
-    color: var(--icon-color-light);
-  }
-  .theme-toggle:hover {
-    transform: scale(1.1);
-  }
+	header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.header-content {
+		display: flex;
+		flex-direction: column;
+	}
+	h1 {
+		font-size: 2.8rem;
+		font-weight: bolder;
+		margin-bottom: 1rem;
+	}
+	nav {
+		display: flex;
+		gap: 1.5rem;
+		flex-wrap: wrap;
+	}
+	@media (max-width: 768px) {
+		nav {
+			gap: 1rem;
+		}
+	}
+	nav a {
+		text-decoration: none;
+		color: var(--accent1);
+	}
+	nav a:hover {
+		color: var(--accent1);
+	}
+	.theme-toggle {
+		background: none;
+		border: none;
+		font-size: 1.5rem;
+		cursor: pointer;
+		color: var(--icon-color-dark);
+		transition: transform 0.3s ease;
+	}
+	html.light-mode .theme-toggle {
+		color: var(--icon-color-light);
+	}
+	.theme-toggle:hover {
+		transform: scale(1.1);
+	}
 </style>
