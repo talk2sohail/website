@@ -91,6 +91,15 @@ const { title } = Astro.props;
     max-width: 100%;
     height: auto;
   }
+  pre {
+    background-color: var(--card-background);
+    padding: 1em;
+    border-radius: 0.5em;
+    overflow-x: auto;
+  }
+  :root.light-mode pre {
+    background-color: #f0f0f0;
+  }
 </style>
 
 <script>

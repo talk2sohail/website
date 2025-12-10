@@ -2,7 +2,7 @@
 title: "A Developer's Guide to Memory-Mapped Files (mmap)"
 description: "Exploring the power and pitfalls of memory-mapped file I/O."
 author: "Md Sohail"
-publishDate: 2025-11-18T00:00:00Z
+publishDate: 2025-12-10T00:00:00Z
 tags: ["systems-programming", "mmap", "performance", "golang"]
 ---
 
