@@ -86,19 +86,62 @@ const { title } = Astro.props;
   }
   code {
     font-family: "IBM Plex Mono", monospace;
+    font-size: 0.75rem;
   }
   article img {
     max-width: 100%;
     height: auto;
   }
+  article p:has(img) {
+    max-width: 80%;
+    margin: auto;
+    text-align: center;
+  }
+  article p:has(img) + p {
+    max-width: 80%;
+    margin: 0.5rem auto 2rem auto;
+    text-align: center;
+    font-size: 0.8rem;
+  }
   pre {
-    background-color: var(--card-background);
+    position: relative;
     padding: 1em;
     border-radius: 0.5em;
     overflow-x: auto;
+    font-size: 0.75rem;
   }
   :root.light-mode pre {
-    background-color: #f0f0f0;
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+  }
+
+  pre .copy-button {
+    position: absolute;
+    top: 0.5em;
+    right: 0.5em;
+    background-color: transparent;
+    color: var(--foreground);
+    border: none;
+    padding: 0.2em;
+    border-radius: 0.3em;
+    cursor: pointer;
+  }
+  :root.light-mode pre .copy-button {
+    color: #333;
+  }
+  [data-rehype-pretty-code-fragment] .dark-theme {
+    display: block;
+  }
+  [data-rehype-pretty-code-fragment] .light-theme {
+    display: none;
+  }
+
+  .light-mode [data-rehype-pretty-code-fragment] .dark-theme {
+    display: none;
+  }
+
+  .light-mode [data-rehype-pretty-code-fragment] .light-theme {
+    display: block;
   }
 </style>
 
@@ -155,5 +198,40 @@ const { title } = Astro.props;
         savedTheme === "light" || savedTheme === "dark" ? savedTheme : "dark";
       applyTheme(initialTheme);
     }
+
+    const codeBlocks = document.querySelectorAll("pre");
+
+    const copyIcon = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
+        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+      </svg>
+    `;
+
+    const copiedIcon = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+        <polyline points="22 4 12 14.01 9 11.01" />
+      </svg>
+    `;
+
+    codeBlocks.forEach((block) => {
+      const button = document.createElement("button");
+      button.innerHTML = copyIcon;
+      button.classList.add("copy-button");
+      block.appendChild(button);
+
+      button.addEventListener("click", () => {
+        const code = block.querySelector("code")?.innerText;
+        if (code) {
+          navigator.clipboard.writeText(code).then(() => {
+            button.innerHTML = copiedIcon;
+            setTimeout(() => {
+              button.innerHTML = copyIcon;
+            }, 2000);
+          });
+        }
+      });
+    });
   });
 </script>
