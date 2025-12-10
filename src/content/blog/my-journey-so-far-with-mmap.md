@@ -21,7 +21,7 @@ With traditional file I/O, you ask the operating system (OS) to read data from a
 
 
 **![](./how-mmap-works.png)**
-*(Image Prompt: A diagram showing a large file on a hard disk on the left, and a block of Virtual Memory addresses on the right. Dotted lines connect specific chunks of the disk file to specific addresses in memory. A label points to the memory saying "To the code, this looks like RAM," while a label points to the connection saying "OS loads pages lazily.")*
+ ˘<small>*(Image Prompt: A diagram showing a large file on a hard disk on the left, and a block of Virtual Memory addresses on the right. Dotted lines connect specific chunks of the disk file to specific addresses in memory. A label points to the memory saying "To the code, this looks like RAM," while a label points to the connection saying "OS loads pages lazily.")*</small>
 
 ### Code Comparison: Standard I/O vs. mmap
 
@@ -80,7 +80,7 @@ The primary benefit of `mmap` is **Zero-Copy I/O**. In traditional `read()`, dat
 
 
 **![](./zero-copy.png)**
-*(Image Prompt: A split comparison. Top (Standard): A "Bucket Brigade" where the Kernel hands data to a User Buffer (Copy). Bottom (mmap): The User accesses the Kernel's bucket directly. Caption: "mmap avoids the redundant copy to user space.")*
+<small>*(Image Prompt: A split comparison. Top (Standard): A "Bucket Brigade" where the Kernel hands data to a User Buffer (Copy). Bottom (mmap): The User accesses the Kernel's bucket directly. Caption: "mmap avoids the redundant copy to user space.")*</small>
 
 ## The Hidden Perils
 
@@ -94,7 +94,7 @@ While your code appears to be accessing memory, which is typically a nanosecond-
 
 
 **![](./page-fault.png)**
-*(Image Prompt: A timeline graph. The CPU line is active (green), then hits a red block "Page Fault." The line goes flat while "Disk I/O" spikes. Caption: "Your thread freezes unpredictably when touching a memory address.")*
+<small>*(Image Prompt: A timeline graph. The CPU line is active (green), then hits a red block "Page Fault." The line goes flat while "Disk I/O" spikes. Caption: "Your thread freezes unpredictably when touching a memory address.")*</small>
 
 ### 2. The Danger of SIGBUS and Difficult Error Handling
 
