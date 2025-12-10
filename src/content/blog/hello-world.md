@@ -3,7 +3,7 @@ title: "Hello, World!"
 description: "This is my first blog post."
 author: "Md Sohail"
 publishDate: 2025-11-18T00:00:00Z
-tags: ["astro", "blogging"]
+tags: ["astro", "blogging", "hello worlds]
 ---
 
 ## Hello, World!
