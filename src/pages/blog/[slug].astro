@@ -10,11 +10,11 @@ import readingTime from "reading-time";
 import type { IReadTimeResults } from "reading-time";
 
 export async function getStaticPaths() {
-	const allPosts: CollectionEntry<"blog">[] = await getCollection("blog");
-	return allPosts.map((post: CollectionEntry<"blog">) => ({
-		params: { slug: post.slug },
-		props: { post },
-	}));
+  const allPosts: CollectionEntry<"blog">[] = await getCollection("blog");
+  return allPosts.map((post: CollectionEntry<"blog">) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
 }
 
 const { post } = Astro.props;
@@ -24,53 +24,61 @@ const stats: IReadTimeResults = readingTime(post.body);
 ---
 
 <Layout title={post.data.title}>
-	<Header />
-	<main>
-		<h1>{post.data.title}</h1>
-		<div class="post-meta">
-			<span class="date"
-				>{
-					post.data.publishDate.toLocaleDateString("en-US", {
-						day: "2-digit",
-						month: "short",
-						year: "numeric",
-					})
-				}</span
-			>
-			<span class="reading-time">{stats.text}</span>
-		</div>
-		<hr class="dotted-line" />
-		<article>
-			<Content />
-		</article>
-	</main>
-	<Footer />
+  <Header />
+  <main>
+    <div class="post-header">
+      <h1>{post.data.title}</h1>
+      <div class="post-meta">
+        <span class="author">{post.data.author}</span>
+        <span class="separator">•</span>
+        <span class="date">
+          {
+            post.data.publishDate.toLocaleDateString("en-US", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })
+          }
+        </span>
+        <span class="separator">•</span>
+        <span class="reading-time">{stats.text}</span>
+      </div>
+    </div>
+    <hr class="separator-line" />
+    <article>
+      <Content />
+    </article>
+  </main>
+  <Footer />
 </Layout>
 
 <style>
-	h1 {
-		font-size: 2.8rem;
-		font-weight: bolder;
-		margin-bottom: 1rem;
-	}
-	.post-meta {
-		display: flex;
-		justify-content: space-between;
-		color: var(--foreground);
-		font-size: 0.8rem;
-	}
-	.dotted-line {
-		border: none;
-		height: 1px;
-		background-image: radial-gradient(
-			circle,
-			var(--foreground) 1px,
-			transparent 1px
-		);
-		background-size: 5px 1px;
-		background-repeat: repeat-x;
-	}
-	article {
-		line-height: 1.6;
-	}
+  .post-header {
+    margin-bottom: 2rem;
+  }
+  h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    color: var(--foreground);
+    opacity: 0.8;
+    font-size: 1rem;
+    align-items: center;
+  }
+  .separator-line {
+    border: none;
+    height: 1px;
+    background: var(--border-color, #2f334d);
+    margin: 2rem 0;
+  }
+  article {
+    /* Inherits line-height and font-size from Layout global styles */
+  }
 </style>
