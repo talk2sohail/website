@@ -68,7 +68,6 @@ To keep track of which migrations have been applied, we need a special table in 
 This function checks if the table exists. If it doesn't (or if the schema is mismatched/outdated), it creates it. This table records the migration name, a checksum (to ensure file integrity), timing details, and logs.
 
 ```go
-
 func ensureSchemaMigrationsTable(db *sql.DB) error {
     // Check if table exists, if not create it
     query := `
@@ -103,7 +102,6 @@ Updates the record on success (finished_at) or failure (recording the error in l
 Using a transaction is crucial here—if the SQL fails, the database rolls back to its previous state, preventing partial migrations.
 
 ```go
-
 func runMigrations(db *sql.DB) error {
     // Glob *.up.sql files and sort them
     // Loop through files and check against DB
@@ -117,7 +115,6 @@ func applyMigration(db *sql.DB, file, name string) error {
     // Execute SQL
     // Commit Transaction & Update record to "finished"
 }
-
 ```
 
 ## 4. Rolling Back: down
@@ -146,12 +143,10 @@ func rollbackMigration(db *sql.DB) error {
 Finally, it's helpful to know where we stand. The checkStatus function queries the last 5 entries in schema_migrations and prints their status—whether they were applied, rolled back, or are in a failed state.
 
 ```go
-
 func checkStatus(db *sql.DB) error {
     // Query last 5 rows
     // Print formatted status (Applied / Rolled back)
 }
-
 ```
 
 ## Conclusion
@@ -160,6 +155,6 @@ It is best practise to have both `up` and `down` sql files for your current and 
 
 ## References
 
-1. Access the full implementation [here](https://github.com/talk2sohail/invito/backend/cmd/migrate)
+1. Access the full implementation [here](https://github.com/talk2sohail/invito/tree/go-port/backend/cmd/migrate)
 2. Also a nice open-source implementation for a db migration cli and library can be found [here](https://github.com/golang-migrate/migrate)
 
