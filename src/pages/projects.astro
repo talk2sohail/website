@@ -2,13 +2,103 @@
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+
+const projects = [
+	{
+		title: "privo.club",
+		description: "Invite closed ones to private events. Privo.club is a privacy-focused social event platform that helps you organize and celebrate life's special moments with your close ones.",
+		github: "https://github.com/talk2sohail/privo.club",
+		homepage: "https://privo.club",
+	},
+	{
+		title: "logger",
+		description: "A simple persisted, append-only, write-ahead log library for Go.",
+		github: "https://github.com/talk2sohail/logger",
+	},
+];
 ---
 
 <Layout title="Projects | Md Sohail">
 	<Header />
 	<main>
 		<h1>Projects</h1>
-		<p>This page is under construction.</p>
+		<div class="projects-grid">
+			{
+				projects.map((project) => (
+					<div class="project-card">
+						<h2>{project.title}</h2>
+						<p>{project.description}</p>
+						<div class="project-links">
+							{project.homepage && (
+								<a href={project.homepage} target="_blank" rel="noopener noreferrer">
+									Homepage
+								</a>
+							)}
+							<a href={project.github} target="_blank" rel="noopener noreferrer">
+								GitHub
+							</a>
+						</div>
+					</div>
+				))
+			}
+		</div>
 	</main>
 	<Footer />
 </Layout>
+
+<style>
+	h1 {
+		font-size: 2rem;
+		font-weight: bold;
+		margin-bottom: 2rem;
+	}
+	.projects-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 2rem;
+		margin-bottom: 4rem; /* Ensure space before footer */
+	}
+
+	.project-card {
+		background: var(--card-background);
+		border: 1px solid var(--border-color);
+		border-radius: 8px;
+		padding: 1.5rem;
+		transition: transform 0.2s ease, border-color 0.2s ease;
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		position: relative;
+	}
+	.project-card:hover {
+		transform: translateY(-2px);
+		border-color: var(--accent1);
+	}
+	.project-card h2 {
+		color: var(--accent1);
+		font-size: 1.25rem;
+		font-weight: bold;
+		margin: 0 0 0.5rem 0;
+	}
+	.project-card p {
+		color: var(--foreground);
+		margin: 0;
+		font-size: 1rem;
+		line-height: 1.5;
+		flex-grow: 1;
+		margin-bottom: 2.5rem; /* Ensure space for links at bottom */
+	}
+	.project-links {
+		margin-top: auto;
+		display: flex;
+		gap: 1rem;
+		align-self: flex-end;
+		justify-self: flex-end;
+		/* Position absolute could also work but flex is safer for variable content */
+	}
+	.project-links a {
+		font-size: 0.9rem;
+		text-decoration: none;
+		color: var(--accent1);
+	}
+</style>
