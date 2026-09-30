@@ -1,4 +1,11 @@
 ---
+import { getImage } from "astro:assets";
+import "@fontsource/ibm-plex-sans/400.css";
+import "@fontsource/ibm-plex-sans/600.css";
+import "@fontsource/ibm-plex-sans/700.css";
+import "@fontsource/ibm-plex-mono/400.css";
+import profile from "../assets/profile.jpg";
+
 const SITE_NAME = "Md Sohail";
 const SITE_DESCRIPTION =
   "Md Sohail's blog on backend systems, databases, distributed systems and cloud native applications.";
@@ -19,7 +26,8 @@ const {
 
 const fullTitle = title === SITE_NAME ? title : `${title} | ${SITE_NAME}`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const imageURL = new URL("/profile.JPG", Astro.site);
+const ogImage = await getImage({ src: profile, width: 600, format: "jpeg" });
+const imageURL = new URL(ogImage.src, Astro.site);
 ---
 
 <!doctype html>
@@ -86,7 +94,6 @@ const imageURL = new URL("/profile.JPG", Astro.site);
   </body>
 </html>
 <style is:global>
-  @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans&display=swap");
   :root {
     --background: #16161e;
     --foreground: #c0caf5;
@@ -205,8 +212,7 @@ const imageURL = new URL("/profile.JPG", Astro.site);
     position: relative;
     padding: 1.25rem;
     border-radius: 8px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
+    overflow-x: auto;
     font-size: 0.9rem;
     background: var(--code-background);
     border: 1px solid var(--border-color);
@@ -238,8 +244,11 @@ const imageURL = new URL("/profile.JPG", Astro.site);
     opacity: 0.8;
   }
 
-  /* Copy Button */
-  pre .copy-button {
+  /* Copy Button (anchored to a wrapper so it stays put when code scrolls) */
+  .code-block {
+    position: relative;
+  }
+  .code-block .copy-button {
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
@@ -252,12 +261,90 @@ const imageURL = new URL("/profile.JPG", Astro.site);
     opacity: 0;
     transition: opacity 0.2s ease;
   }
-  pre:hover .copy-button {
+  .code-block:hover .copy-button,
+  .code-block .copy-button:focus-visible {
     opacity: 1;
   }
-  :root.light-mode pre .copy-button {
+  /* Touch screens have no hover, so keep the button visible there. */
+  @media (hover: none) {
+    .code-block .copy-button {
+      opacity: 0.7;
+    }
+  }
+  :root.light-mode .code-block .copy-button {
     color: #333;
     background-color: transparent;
+  }
+
+  /* Page-level headings and list-page chrome */
+  main > h1 {
+    font-size: 2.2rem;
+    font-weight: bolder;
+    margin-bottom: 1rem;
+  }
+  .links a {
+    color: var(--accent1);
+    text-decoration: none;
+  }
+  .links a:hover {
+    text-decoration: underline;
+  }
+  .dotted-line {
+    border: none;
+    height: 1px;
+    background-image: radial-gradient(
+      circle,
+      var(--foreground) 1px,
+      transparent 1px
+    );
+    background-size: 5px 1px;
+    background-repeat: repeat-x;
+    margin: 1.5rem 0;
+  }
+
+  /* GitHub-style alerts: > [!NOTE], [!TIP], [!IMPORTANT], [!WARNING], [!CAUTION] */
+  .markdown-alert {
+    --alert-color: var(--accent1);
+    border-left: 4px solid var(--alert-color);
+    background: var(--card-background);
+    border-radius: 0 4px 4px 0;
+    margin: 1.5rem 0;
+    padding: 0.75rem 1rem;
+  }
+  .markdown-alert > :last-child {
+    margin-bottom: 0;
+  }
+  .markdown-alert-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 0.5rem;
+    font-weight: 600;
+    color: var(--alert-color);
+  }
+  .markdown-alert-title svg {
+    fill: currentColor;
+  }
+  .markdown-alert-tip {
+    --alert-color: #3fb950;
+  }
+  .markdown-alert-important {
+    --alert-color: var(--accent2);
+  }
+  .markdown-alert-warning {
+    --alert-color: #d29922;
+  }
+  .markdown-alert-caution {
+    --alert-color: #f85149;
+  }
+  :root.light-mode .markdown-alert-tip {
+    --alert-color: #1a7f37;
+  }
+  :root.light-mode .markdown-alert-warning {
+    --alert-color: #9a6700;
+  }
+  :root.light-mode .markdown-alert-caution {
+    --alert-color: #cf222e;
   }
 
   /* Shiki dual themes (see astro.config.mjs) */
@@ -343,7 +430,12 @@ const imageURL = new URL("/profile.JPG", Astro.site);
       const button = document.createElement("button");
       button.innerHTML = copyIcon;
       button.classList.add("copy-button");
-      block.appendChild(button);
+      button.type = "button";
+      button.setAttribute("aria-label", "Copy code");
+      const wrapper = document.createElement("div");
+      wrapper.classList.add("code-block");
+      block.replaceWith(wrapper);
+      wrapper.append(block, button);
 
       button.addEventListener("click", () => {
         const code = block.querySelector("code")?.innerText;

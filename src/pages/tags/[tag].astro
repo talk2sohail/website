@@ -1,0 +1,38 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import PostList from "../../components/PostList.astro";
+import { getAllPosts, slugifyTag } from "../../utils/posts";
+import type { Post } from "../../utils/posts";
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  const byTag = new Map<string, { tag: string; posts: Post[] }>();
+  for (const post of posts) {
+    for (const tag of post.data.tags) {
+      const slug = slugifyTag(tag);
+      const entry = byTag.get(slug) ?? { tag, posts: [] };
+      entry.posts.push(post);
+      byTag.set(slug, entry);
+    }
+  }
+  return [...byTag].map(([slug, { tag, posts }]) => ({
+    params: { tag: slug },
+    props: { tag, posts },
+  }));
+}
+
+const { tag, posts } = Astro.props;
+---
+
+<Layout title={`#${tag}`} description={`Posts and TILs tagged “${tag}”.`}>
+  <Header />
+  <main>
+    <h1>#{tag}</h1>
+    <p class="links"><a href="/tags/">All tags</a></p>
+    <hr class="dotted-line" />
+    <PostList posts={posts} showCollection />
+  </main>
+  <Footer />
+</Layout>

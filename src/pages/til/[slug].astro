@@ -1,88 +1,14 @@
 ---
-import { getCollection } from "astro:content";
-import type { CollectionEntry } from "astro:content";
-import Layout from "../../layouts/Layout.astro";
-import Header from "../../components/Header.astro";
-import Footer from "../../components/Footer.astro";
-
-import readingTime from "reading-time";
-import type { IReadTimeResults } from "reading-time";
+import PostLayout from "../../layouts/PostLayout.astro";
+import { getPosts } from "../../utils/posts";
 
 export async function getStaticPaths() {
-  const allPosts: CollectionEntry<"til">[] = await getCollection("til");
-  return allPosts.map((post: CollectionEntry<"til">) => ({
-    params: { slug: post.slug },
-    props: { post },
+  const posts = await getPosts("til");
+  return posts.map((post, i) => ({
+    params: { slug: post.id },
+    props: { post, prev: posts[i - 1], next: posts[i + 1] },
   }));
 }
-
-const { post } = Astro.props;
-const { Content } = await post.render();
-
-const stats: IReadTimeResults = readingTime(post.body);
 ---
 
-<Layout
-  title={post.data.title}
-  description={post.data.description}
-  type="article"
-  publishDate={post.data.publishDate}
->
-  <Header />
-  <main>
-    <div class="post-header">
-      <h1>{post.data.title}</h1>
-      <div class="post-meta">
-        <span class="author">{post.data.author}</span>
-        <span class="separator">•</span>
-        <span class="date">
-          {
-            post.data.publishDate.toLocaleDateString("en-US", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            })
-          }
-        </span>
-        <span class="separator">•</span>
-        <span class="reading-time">{stats.text}</span>
-      </div>
-    </div>
-    <hr class="separator-line" />
-    <article>
-      <Content />
-    </article>
-  </main>
-  <Footer />
-</Layout>
-
-<style>
-  .post-header {
-    margin-bottom: 2rem;
-  }
-  h1 {
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 0.75rem;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-  }
-  .post-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    color: var(--foreground);
-    opacity: 0.8;
-    font-size: 1rem;
-    align-items: center;
-  }
-  .separator-line {
-    border: none;
-    height: 1px;
-    background: var(--border-color, #2f334d);
-    margin: 2rem 0;
-  }
-  article {
-    /* Inherits line-height and font-size from Layout global styles */
-  }
-</style>
+<PostLayout {...Astro.props} />

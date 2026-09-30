@@ -1,0 +1,201 @@
+---
+import { render } from "astro:content";
+import readingTime from "reading-time";
+import Layout from "./Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import TagList from "../components/TagList.astro";
+import { formatDate, postUrl } from "../utils/posts";
+import type { Post } from "../utils/posts";
+
+interface Props {
+  post: Post;
+  prev?: Post;
+  next?: Post;
+}
+
+const { post, prev, next } = Astro.props;
+const { Content, headings } = await render(post);
+const stats = readingTime(post.body ?? "");
+
+// Table of contents: the top two heading levels used in the post.
+const topDepth = Math.min(...headings.map((h) => h.depth));
+const tocHeadings = headings.filter((h) => h.depth <= topDepth + 1);
+const showToc = tocHeadings.length >= 3;
+---
+
+<Layout
+  title={post.data.title}
+  description={post.data.description}
+  type="article"
+  publishDate={post.data.publishDate}
+>
+  <Header />
+  <main>
+    <div class="post-header">
+      <h1>{post.data.title}</h1>
+      <div class="post-meta">
+        <span class="author">{post.data.author}</span>
+        <span class="separator">•</span>
+        <time datetime={post.data.publishDate.toISOString()}>
+          {formatDate(post.data.publishDate)}
+        </time>
+        <span class="separator">•</span>
+        <span class="reading-time">{stats.text}</span>
+        {
+          post.data.updatedDate && (
+            <>
+              <span class="separator">•</span>
+              <span>
+                Updated{" "}
+                <time datetime={post.data.updatedDate.toISOString()}>
+                  {formatDate(post.data.updatedDate)}
+                </time>
+              </span>
+            </>
+          )
+        }
+      </div>
+      <TagList tags={post.data.tags} />
+    </div>
+    <hr class="separator-line" />
+    {
+      showToc && (
+        <nav class="toc" aria-label="Table of contents">
+          <details open>
+            <summary>Contents</summary>
+            <ul>
+              {tocHeadings.map((h) => (
+                <li class={h.depth > topDepth ? "nested" : undefined}>
+                  <a href={`#${h.slug}`}>{h.text}</a>
+                </li>
+              ))}
+            </ul>
+          </details>
+        </nav>
+      )
+    }
+    <article>
+      <Content />
+    </article>
+    {
+      (prev || next) && (
+        <nav class="post-nav" aria-label="More posts">
+          {prev ? (
+            <a href={postUrl(prev)} class="prev">
+              <span class="label">← Newer</span>
+              <span>{prev.data.title}</span>
+            </a>
+          ) : (
+            <span />
+          )}
+          {next && (
+            <a href={postUrl(next)} class="next">
+              <span class="label">Older →</span>
+              <span>{next.data.title}</span>
+            </a>
+          )}
+        </nav>
+      )
+    }
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .post-header {
+    margin-bottom: 2rem;
+  }
+  h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2.2rem;
+    }
+  }
+  .post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    color: var(--foreground);
+    opacity: 0.8;
+    font-size: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .separator-line {
+    border: none;
+    height: 1px;
+    background: var(--border-color, #2f334d);
+    margin: 2rem 0;
+  }
+  .toc {
+    background: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 2rem;
+  }
+  .toc summary {
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .toc ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.75rem 0 0.25rem;
+  }
+  .toc li {
+    margin-bottom: 0.4rem;
+  }
+  .toc li.nested {
+    padding-left: 1.25rem;
+    font-size: 0.95rem;
+  }
+  .toc a,
+  .post-nav a {
+    color: var(--accent1);
+    text-decoration: none;
+  }
+  .toc a:hover,
+  .post-nav a:hover span:last-child {
+    text-decoration: underline;
+  }
+  .post-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+  }
+  @media (max-width: 480px) {
+    .post-nav {
+      grid-template-columns: 1fr;
+    }
+  }
+  .post-nav a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .post-nav .next {
+    text-align: right;
+    grid-column: 2;
+  }
+  @media (max-width: 480px) {
+    .post-nav .next {
+      grid-column: 1;
+    }
+  }
+  .post-nav .label {
+    color: var(--foreground);
+    opacity: 0.7;
+    font-size: 0.85rem;
+  }
+</style>

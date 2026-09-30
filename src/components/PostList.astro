@@ -1,0 +1,72 @@
+---
+import { formatDate, postUrl } from "../utils/posts";
+import type { Post } from "../utils/posts";
+
+interface Props {
+  posts: Post[];
+  showCollection?: boolean;
+}
+
+const { posts, showCollection = false } = Astro.props;
+---
+
+<ul class="post-list">
+  {
+    posts.map((post) => (
+      <li>
+        <time class="date" datetime={post.data.publishDate.toISOString()}>
+          {formatDate(post.data.publishDate, "short")}
+        </time>
+        <span>
+          <a href={postUrl(post)}>{post.data.title}</a>
+          {showCollection && (
+            <span class="collection">
+              {post.collection === "til" ? "TIL" : "Post"}
+            </span>
+          )}
+          {post.data.draft && <span class="collection">Draft</span>}
+        </span>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .post-list {
+    list-style: none;
+    padding: 0;
+  }
+  .post-list li {
+    display: flex;
+    gap: 1.5rem;
+    align-items: baseline;
+    margin-bottom: 1rem;
+  }
+  @media (max-width: 480px) {
+    .post-list li {
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+  }
+  .date {
+    color: var(--foreground);
+    opacity: 0.8;
+    width: 120px;
+    flex-shrink: 0;
+  }
+  .post-list a {
+    text-decoration: none;
+    color: var(--accent1);
+  }
+  .post-list a:hover {
+    text-decoration: underline;
+  }
+  .collection {
+    margin-left: 0.5rem;
+    font-size: 0.75rem;
+    padding: 0.1em 0.5em;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    opacity: 0.8;
+  }
+</style>

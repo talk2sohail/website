@@ -1,3 +1,8 @@
+---
+import { Image } from "astro:assets";
+import profile from "../assets/profile.jpg";
+---
+
 <div class="bio-wrapper">
 	<div class="bio-text">
 		<h2>👋 Hello</h2>
@@ -16,7 +21,14 @@
 		</p>
 	</div>
 	<div class="profile-picture">
-		<img src="/profile.JPG" alt="Md Sohail" />
+		<Image
+				src={profile}
+				alt="Md Sohail"
+				width={150}
+				height={150}
+				densities={[1, 2]}
+				loading="eager"
+			/>
 	</div>
 </div>
 

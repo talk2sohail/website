@@ -1,12 +1,8 @@
 ---
-import { getCollection } from "astro:content";
-import type { CollectionEntry } from "astro:content";
-import { sortPosts } from "../utils/posts";
+import { getPosts, postUrl } from "../utils/posts";
 
-const allPosts = await getCollection("blog");
-const posts: CollectionEntry<"blog">[] = allPosts
+const posts = (await getPosts("blog"))
 	.filter((post) => post.data.featured)
-	.sort(sortPosts)
 	.slice(0, 4);
 ---
 
@@ -17,7 +13,7 @@ const posts: CollectionEntry<"blog">[] = allPosts
 		{
 			posts.map((post) => (
 				<li>
-					<a href={`/blog/${post.slug}`}>{post.data.title}</a>
+					<a href={postUrl(post)}>{post.data.title}</a>
 				</li>
 			))
 		}

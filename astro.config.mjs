@@ -2,6 +2,7 @@ import { defineConfig } from "astro/config";
 
 import node from "@astrojs/node";
 import sitemap from "@astrojs/sitemap";
+import { remarkAlert } from "remark-github-blockquote-alert";
 
 // https://astro.build/config
 export default defineConfig({
@@ -12,8 +13,14 @@ export default defineConfig({
   adapter: node({
     mode: "standalone",
   }),
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      // Hidden from the nav until it has content.
+      filter: (page) => !page.includes("/projects"),
+    }),
+  ],
   markdown: {
+    remarkPlugins: [remarkAlert],
     shikiConfig: {
       themes: {
         light: "github-light",

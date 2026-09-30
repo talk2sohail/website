@@ -8,7 +8,7 @@ featured: true
 ---
 
 
-# Back story
+## Back story
 
 Until a year ago, I didn't know what DB migration was. As usual, it was a dreadful task when asked to perform it in production. I was working in a Golang microservice environment with a Postgres setup. Whenever I had to make some changes to the schema, I had to talk to our 'DB guy' for help. 
 
@@ -18,10 +18,11 @@ There are various definitions of database migration. You can always Google to kn
 
 Today, we will learn how to write a simple tool that helps us streamline DB migration for schema changes, query optimization, and data replication. The tool aims to deliver the following functionality. 
 
-> [NOTE] : This is not going to be a full-fledged migration system.
+> [!NOTE]
+> This is not going to be a full-fledged migration system.
 
 
-# Why I needed a migration tool
+## Why I needed a migration tool
 
 As mentioned earlier, I am working on a golang backend with postgres for which i need to make schema changes and I wanted to do it in way so that it is reversible, seamless, and consistent.
 
@@ -63,7 +64,7 @@ func main() {
 ```
 
 
-##  2. The Tracker: ensureSchemaMigrationsTable
+## 2. The Tracker: ensureSchemaMigrationsTable
 To keep track of which migrations have been applied, we need a special table in our database. I called it schema_migrations.
 
 This function checks if the table exists. If it doesn't (or if the schema is mismatched/outdated), it creates it. This table records the migration name, a checksum (to ensure file integrity), timing details, and logs.
