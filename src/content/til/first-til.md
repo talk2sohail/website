@@ -1,7 +1,7 @@
 ---
 title: "My First TIL"
 description: "This is my first TIL post!"
-author: "Your Name"
+author: "Md Sohail"
 publishDate: 2025-12-10T00:00:00Z
 tags: ["astro", "til"]
 ---

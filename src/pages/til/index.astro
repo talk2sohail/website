@@ -15,7 +15,7 @@ const allPosts: CollectionEntry<'til'>[] = posts.sort(sortTils);
   <main>
     <h1>Today I Learned</h1>
     <p>A collection of bite sized notes on various topics that I’ve learned over time.</p>
-    <a href="/rss.xml" class="rss-link">Subscribe to Atom feed</a>
+    <a href="/rss.xml" class="rss-link">Subscribe via RSS</a>
     <hr class="dotted-line" />
     <ul class="post-list">
       {allPosts.map((post: CollectionEntry<'til'>) => (

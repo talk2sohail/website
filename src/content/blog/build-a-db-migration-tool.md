@@ -3,7 +3,8 @@ title: "Writing a db migration tool in Go"
 description: "A DB migration tool in Go for consistent and seamless migration"
 author: "Md Sohail"
 publishDate: 2026-01-18T00:00:00Z
-tags: ["astro", "til", "go", "db", "postgres", "migration"]
+tags: ["go", "db", "postgres", "migration"]
+featured: true
 ---
 
 

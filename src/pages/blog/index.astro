@@ -15,7 +15,7 @@ const allPosts: CollectionEntry<'blog'>[] = posts.sort(sortPosts);
   <Header />
   <main>
     <h1>Posts</h1>
-    <a href="/rss.xml" class="rss-link">Subscribe to Atom feed</a>
+    <a href="/rss.xml" class="rss-link">Subscribe via RSS</a>
     <hr class="dotted-line" />
     <ul class="post-list">
       {allPosts.map((post: CollectionEntry<'blog'>) => (

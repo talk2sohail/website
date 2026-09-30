@@ -1,20 +1,65 @@
 ---
+const SITE_NAME = "Md Sohail";
+const SITE_DESCRIPTION =
+  "Md Sohail's blog on backend systems, databases, distributed systems and cloud native applications.";
+
 interface Props {
   title: string;
+  description?: string;
+  type?: "website" | "article";
+  publishDate?: Date;
 }
 
-const { title } = Astro.props;
+const {
+  title,
+  description = SITE_DESCRIPTION,
+  type = "website",
+  publishDate,
+} = Astro.props;
+
+const fullTitle = title === SITE_NAME ? title : `${title} | ${SITE_NAME}`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const imageURL = new URL("/profile.JPG", Astro.site);
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Astro description" />
-    <meta name="viewport" content="width=device-width" />
-    <script defer src="https://umami.mdsohail.dev/script.js" data-website-id="ed88fb31-9529-440b-97f9-02d801a5812f"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Md Sohail | Blog & TIL"
+      href={new URL("/rss.xml", Astro.site)}
+    />
+
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={imageURL} />
+    {
+      publishDate && (
+        <meta
+          property="article:published_time"
+          content={publishDate.toISOString()}
+        />
+      )
+    }
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:creator" content="@talk2sohail1001" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageURL} />
+
+    <script is:inline defer src="https://umami.mdsohail.dev/script.js" data-website-id="ed88fb31-9529-440b-97f9-02d801a5812f"></script>
     <script is:inline>
       const theme = (() => {
         if (
@@ -23,8 +68,8 @@ const { title } = Astro.props;
         ) {
           return localStorage.getItem("theme");
         }
-        if (window.matchMedia("(prefers-color-scheme: light)").matches) {
-          return "light";
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+          return "dark";
         }
         return "light";
       })();
@@ -215,20 +260,14 @@ const { title } = Astro.props;
     background-color: transparent;
   }
 
-  /* Rehype Pretty Code Handling */
-  [data-rehype-pretty-code-fragment] .dark-theme {
-    display: block;
+  /* Shiki dual themes (see astro.config.mjs) */
+  .astro-code,
+  .astro-code span {
+    color: var(--shiki-dark);
   }
-  [data-rehype-pretty-code-fragment] .light-theme {
-    display: none;
-  }
-
-  .light-mode [data-rehype-pretty-code-fragment] .dark-theme {
-    display: none;
-  }
-
-  .light-mode [data-rehype-pretty-code-fragment] .light-theme {
-    display: block;
+  :root.light-mode .astro-code,
+  :root.light-mode .astro-code span {
+    color: var(--shiki-light);
   }
 </style>
 
@@ -280,10 +319,8 @@ const { title } = Astro.props;
         applyTheme(newTheme);
       });
 
-      const savedTheme = localStorage.getItem("theme");
-      const initialTheme: Theme =
-        savedTheme === "light" || savedTheme === "dark" ? savedTheme : "dark";
-      applyTheme(initialTheme);
+      // The inline script in <head> has already picked the theme; just sync the icon.
+      applyTheme(html.classList.contains("light-mode") ? "light" : "dark");
     }
 
     const codeBlocks = document.querySelectorAll("pre");

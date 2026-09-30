@@ -1,9 +1,9 @@
 ---
 title: "Wrestling with the Docker Daemon: A Tale of Sockets and Security"
-description: "tacking the docker security problem"
+description: "Tackling the Docker-in-Docker socket and permissions problem"
 author: "Md Sohail"
 publishDate: 2025-12-18T00:00:00Z
-tags: ["astro", "til", "docker", "sandbox", "backend"]
+tags: ["til", "docker", "sandbox", "backend"]
 ---
 
 I hit a wall. I was working on deploying a neat little open-source tool called `codapi`, a server that lets you run code in isolated sandboxes. The deployment platform was Coolify, which makes container-based deployments a breeze. I had a `Dockerfile`, the app was building, the container was running... and then it would fall flat on its face the moment I asked it to do its job.

@@ -4,9 +4,10 @@ description: "Exploring the power and pitfalls of memory-mapped file I/O."
 author: "Md Sohail"
 publishDate: 2025-12-10T00:00:00Z
 tags: ["systems-programming", "mmap", "performance", "golang"]
+featured: true
 ---
 
-In systems programming, there's a technique that feels both like a powerful shortcut and a hidden trap: [mmap2](https://man7.org/linux/man-pages/man2/mmap.2.html) system call., or memory-mapped file I/O. If you're accustomed to the traditional routine of managing buffers and `read()` and `write()` system calls, mmap can seem like a revelation. It allows you to treat a file on disk as if it were a part of your program's memory.
+In systems programming, there's a technique that feels both like a powerful shortcut and a hidden trap: the [mmap(2)](https://man7.org/linux/man-pages/man2/mmap.2.html) system call, or memory-mapped file I/O. If you're accustomed to the traditional routine of managing buffers and `read()` and `write()` system calls, mmap can seem like a revelation. It allows you to treat a file on disk as if it were a part of your program's memory.
 
 This post explores that idea: the performance benefits of treating your hard drive like RAM, and the subtle complexities that have challenged even experienced database developers.
 
@@ -15,8 +16,8 @@ This post explores that idea: the performance benefits of treating your hard dri
 With traditional file I/O, you ask the operating system (OS) to read data from a disk and copy it into a buffer in your program's memory. With mmap, you ask the OS to map the file's contents directly into your program’s virtual address space. The result is a pointer (or a slice in Go) that you can use to access the file's data as if it were an in-memory array.
 
 
-**![](./how-mmap-works.png)**
-<small>*(Image Prompt: A diagram showing a large file on a hard disk on the left, and a block of Virtual Memory addresses on the right. Dotted lines connect specific chunks of the disk file to specific addresses in memory. A label points to the memory saying "To the code, this looks like RAM," while a label points to the connection saying "OS loads pages lazily.")*</small>
+![A file on disk mapped into a process's virtual address space](./how-mmap-works.png)
+<small>*To your code the mapped file looks like ordinary memory; the OS loads its pages lazily.*</small>
 
 ### Code Comparison: Standard I/O vs. mmap
 
@@ -74,8 +75,8 @@ The primary benefit of mmap is **Zero-Copy I/O**. In traditional `read()`, data 
 
 
 
-**![](./zero-copy.png)**
-<small>*(Image Prompt: A split comparison. Top (Standard): A "Bucket Brigade" where the Kernel hands data to a User Buffer (Copy). Bottom (mmap): The User accesses the Kernel's bucket directly. Caption: "mmap avoids the redundant copy to user space.")*</small>
+![Standard read() copying through a user buffer vs. mmap reading the kernel page cache directly](./zero-copy.png)
+<small>*mmap avoids the redundant copy from the kernel into user space.*</small>
 
 ## The Hidden Perils
 
@@ -88,8 +89,8 @@ While your code appears to be accessing memory, which is typically a nanosecond-
 
 
 
-**![](./page-fault.png)**
-<small>*(Image Prompt: A timeline graph. The CPU line is active (green), then hits a red block "Page Fault." The line goes flat while "Disk I/O" spikes. Caption: "Your thread freezes unpredictably when touching a memory address.")*</small>
+![Timeline of a thread stalling on a page fault while disk I/O completes](./page-fault.png)
+<small>*A page fault can freeze your thread unpredictably when it touches a memory address.*</small>
 
 ### 2. The Danger of SIGBUS and Difficult Error Handling
 

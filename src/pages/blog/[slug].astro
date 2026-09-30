@@ -1,5 +1,4 @@
 ---
-export const prerender = true;
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
@@ -23,7 +22,12 @@ const { Content } = await post.render();
 const stats: IReadTimeResults = readingTime(post.body);
 ---
 
-<Layout title={post.data.title}>
+<Layout
+  title={post.data.title}
+  description={post.data.description}
+  type="article"
+  publishDate={post.data.publishDate}
+>
   <Header />
   <main>
     <div class="post-header">

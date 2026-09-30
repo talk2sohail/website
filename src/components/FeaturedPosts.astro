@@ -4,7 +4,10 @@ import type { CollectionEntry } from "astro:content";
 import { sortPosts } from "../utils/posts";
 
 const allPosts = await getCollection("blog");
-const posts: CollectionEntry<"blog">[] = allPosts.sort(sortPosts).slice(0, 4);
+const posts: CollectionEntry<"blog">[] = allPosts
+	.filter((post) => post.data.featured)
+	.sort(sortPosts)
+	.slice(0, 4);
 ---
 
 <div class="featured-posts">
